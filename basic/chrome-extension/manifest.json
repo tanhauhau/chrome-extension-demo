@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+  "name": "My Chrome Extension 😎",
+  "description": "My Chrome Extension 😎",
+  "version": "1.0.0",
+  "devtools_page": "devtools.html",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "img_16.png",
+    "32": "img_32.png",
+    "64": "img_64.png"
+  },
+  "browser_action": {
+    "default_title": "My Chrome Extension 😎",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "img_16.png",
+      "32": "img_32.png",
+      "64": "img_64.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [],
+  "permissions": ["activeTab"]
+}

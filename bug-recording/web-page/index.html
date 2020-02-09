@@ -1,0 +1,22 @@
+<html>
+<style>
+  #message {
+    color: red;
+    font-size: 30px;
+  }
+</style>
+
+<body>
+  <button>Click Me</button>
+  <div id="message"></div>
+  <script>
+    const button = document.querySelector('button');
+    const message = document.querySelector('#message');
+    button.addEventListener('click', () => {
+      message.textContent = 'Error!';
+      throw new Error('Oops');
+    });
+  </script>
+</body>
+
+</html>

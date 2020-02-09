@@ -1,0 +1,127 @@
+<html>
+
+<head>
+  <style>
+    table {
+      font-size: 24px;
+      margin-top: 16px;
+    }
+
+    th {
+      padding: 8 16px;
+      background-color: gainsboro;
+      text-align: right;
+      min-width: 100px;
+    }
+
+    td {
+      padding: 8 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <span data-label="language"></span>:
+    <span data-label="language_value"></span>
+  </div>
+  <table>
+    <tr>
+      <th data-label="name_label"></th>
+      <td>Tan Li Hau</td>
+    </tr>
+    <tr data-toggle="show_age">
+      <th data-label="age_label"></th>
+      <td>27</td>
+    </tr>
+    <tr data-toggle="show_gender">
+      <th data-label="gender_label"></th>
+      <td data-label="male_label"></td>
+    </tr>
+  </table>
+  <script>
+    // config
+    let language = 'english';
+    const feature_toggles = {
+      show_age: true,
+      show_gender: false,
+    }
+    // 
+    const translation = {
+      name_label: {
+        'english': 'Name',
+        'chinese': '名字',
+        'japanese': '名前',
+      },
+      age_label: {
+        'english': 'Age',
+        'chinese': '年龄',
+        'japanese': '年齢',
+      },
+      gender_label: {
+        'english': 'Gender',
+        'chinese': '性別',
+        'japanese': '性別',
+      },
+      male_label: {
+        'english': 'Male',
+        'chinese': '男',
+        'japanese': '男性',
+      },
+      language: {
+        'english': 'Language',
+        'chinese': '语言',
+        'japanese': '言語',
+      },
+      language_value: {
+        'english': 'English',
+        'chinese': '中文',
+        'japanese': '日本語',
+      }
+    };
+    const labels = document.querySelectorAll('[data-label]');
+    const update_translation = () => {
+      labels.forEach(label =>
+        label.textContent = translation[label.getAttribute('data-label')][language]
+      );
+    };
+    const toggle_views = document.querySelectorAll('[data-toggle]');
+    const update_feature_toggle = () => {
+      toggle_views.forEach(view => {
+        const shouldShow = feature_toggles[view.getAttribute('data-toggle')];
+        view.style.display = shouldShow ? 'table-row' : 'none';
+      });
+    };
+
+    update_translation();
+    update_feature_toggle();
+
+    __MY_EXTENSION_HOOK__.subscribe('language.change', (event) => {
+      language = event.data;
+      update_translation();
+    });
+
+    __MY_EXTENSION_HOOK__.subscribe('feature.toggle-show_age', (event) => {
+      feature_toggles.show_age = event.data;
+      update_feature_toggle();
+    });
+
+    __MY_EXTENSION_HOOK__.subscribe('feature.toggle-show_gender', (event) => {
+      feature_toggles.show_gender = event.data;
+      update_feature_toggle();
+    });
+
+    __MY_EXTENSION_HOOK__.subscribe('init', () => {
+      __MY_EXTENSION_HOOK__.sendMessage({
+        to: 'popup',
+        type: 'init_data',
+        data: {
+          language,
+          feature_toggles,
+        },
+      })
+    });
+  </script>
+</body>
+
+</html>

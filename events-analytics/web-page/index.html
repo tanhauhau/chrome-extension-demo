@@ -1,0 +1,25 @@
+<html>
+
+<body>
+  <button>Click Me</button>
+  <script>
+    const button = document.querySelector('button');
+    let i = 0;
+    button.addEventListener('click', () => {
+      if (typeof __MY_EXTENSION_HOOK__ !== "undefined") {
+        __MY_EXTENSION_HOOK__.recordEvent({
+          name: `event_${i++}`,
+          value: {
+            foo: 'bar',
+            baz: {
+              a: 1,
+              b: 2,
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
